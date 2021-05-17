@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: sandbox
+  name: techtrends
+  labels:
+    app: techtrends
+    tag: latest
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: techtrends
+        tag: latest
+    spec:
+      containers:
+      - image: techtrends:latest
+        imagePullPolicy: IfNotPresent
+        name: zaomai/techtrends
+        resources:
+          requests:
+            cpu: 250m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 128Mi
+        selectors:
+          matchLabels:
+            app: techtrends
+            tag: latest
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3111
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 3111
+          initialDelaySeconds: 3
+          periodSeconds: 3

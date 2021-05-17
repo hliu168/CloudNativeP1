@@ -8,6 +8,10 @@ metadata:
     tag: latest
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: techtrends
+      tag: latest
   template:
     metadata:
       labels:

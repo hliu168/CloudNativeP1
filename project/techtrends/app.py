@@ -40,14 +40,14 @@ def get_post(post_id):
     post = connection.execute('SELECT * FROM posts WHERE id = ?',
                         (post_id,)).fetchone()
     connection.close()
-    c.decrement()
+#    c.decrement()
     return post
 
 def get_post_count():
     connection = get_db_connection()
     post_count = connection.execute('SELECT count(*) FROM posts').fetchone()
     connection.close()
-    c.decrement()
+#    c.decrement()
     return post_count[0]
 
 def get_timestamp():
@@ -64,7 +64,7 @@ def index():
     connection = get_db_connection()
     posts = connection.execute('SELECT * FROM posts').fetchall()
     connection.close()
-    c.decrement()
+#    c.decrement()
     return render_template('index.html', posts=posts)
 
 # Define how each individual article is rendered 
@@ -100,7 +100,7 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-            c.decrement()
+ #           c.decrement()
             app.logger.info('{}, Article "{}" created!'.format(get_timestamp(), title))
             return redirect(url_for('index'))
 

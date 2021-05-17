@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace.name }}
+  name: {{ .Values.image.repository }}
+  labels:
+    app: {{ .Values.image.repository }}
+    tag: {{ .Values.image.tag }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.image.repository }}
+      tag: {{ .Values.image.tag }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.image.repository }}
+        tag: {{ .Values.image.tag }}
+    spec:
+      containers:
+      - image: zaomai/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: {{ .Values.image.repository }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.livenessProbe.path }} 
+            port: {{ .Values.containerPort }}
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.readinessProbe.path }}
+            port: {{ .Values.containerPort }}
+          initialDelaySeconds: 3
+          periodSeconds: 3

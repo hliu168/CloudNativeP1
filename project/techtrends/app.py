@@ -73,16 +73,16 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-      app.logger.info('{}, A non-existing article is accessed and a 404 page is returned!'.format(get_timestamp()))
+      app.logger.info('A non-existing article is accessed and a 404 page is returned!')
       return render_template('404.html'), 404
     else:
-      app.logger.info('{}, Article "{}" retrieved!'.format(get_timestamp(), post['title']))
+      app.logger.info('Article "{}" retrieved!'.format(post['title']))
       return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
 def about():
-    app.logger.info('{}, The "About Us" page is retrieved!'.format(get_timestamp()))
+    app.logger.info('The "About Us" page is retrieved!')
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -101,7 +101,7 @@ def create():
             connection.commit()
             connection.close()
  #           c.decrement()
-            app.logger.info('{}, Article "{}" created!'.format(get_timestamp(), title))
+            app.logger.info('Article "{}" created!'.format(title))
             return redirect(url_for('index'))
 
     return render_template('create.html')
@@ -132,7 +132,8 @@ if __name__ == "__main__":
 #    logging.getLogger('werkzeug').setLevel(logging.DEBUG)
 #    logging.getLogger('werkzeug').addHandler(stdout_handler)
 #    logging.getLogger('werkzeug').addHandler(stderr_handler)
-    logging.basicConfig(level=logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.DEBUG, formatter=formatter, handlers=handlers)
 #    app.logger.setLevel(logging.DEBUG)
 #    app.logger.addHandler(stdout_handler)
 #    app.logger.addHandler(stderr_handler)
